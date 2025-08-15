@@ -1,0 +1,15 @@
+# By default all git files
+.gitignore
+.git
+
+# Docker related
+.dockerignore
+Dockerfile
+
+# nodejs
+.yarn
+!.yarn/releases
+!.yarn/plugins
+**/node_modules
+**/.next
+**/tsconfig.tsbuildinfo
