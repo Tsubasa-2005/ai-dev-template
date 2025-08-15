@@ -1,0 +1,101 @@
+{
+  "name": "main",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/ai-dev-template",
+  "containerEnv": {
+    "DEVCONTAINER": "true",
+    "TZ": "Asia/Tokyo",
+    "PIP_DISABLE_PIP_VERSION_CHECK": "1"
+  },
+  // Features to add to the dev container. More info: https://containers.dev/features.
+  // Project's dependencies should be managed by asdf.
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli": {
+      "version": "latest"
+    },
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      // Fixed dockerDashComposeVersion is temporary solution for the issue.
+      // https://github.com/devcontainers/features/issues/1297
+      "dockerDashComposeVersion": "v2.33.1",
+      "version": "latest"
+    },
+    // Faster alternative to the grep command.
+    // Claude Code uses ripgrep for code search.
+    "ghcr.io/jungaretti/features/ripgrep": {
+      "version": "latest"
+    }
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit",
+          "source.organizeImports": "explicit"
+        },
+        "eslint.codeActionsOnSave.mode": "all",
+        "prettier.requireConfig": false,
+        "terminal.integrated.scrollback": 10000,
+        "typescript.preferences.importModuleSpecifier": "non-relative",
+        "python.analysis.typeCheckingMode": "basic",
+        "python.defaultInterpreterPath": "/workspaces/ai-dev-template/backend/.venv/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "python.testing.pytestArgs": ["backend"],
+        "[javascript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[typescript]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[json]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[markdown]": {
+          "editor.unicodeHighlight.ambiguousCharacters": false,
+          "editor.wordWrap": "on",
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[yaml]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        },
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.python",
+          "editor.formatOnSave": true,
+          "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+          },
+          "python.formatting.provider": "black"
+        },
+        "githubPullRequests.ignoredPullRequestBranches": ["main"]
+      },
+      "extensions": [
+        "bierner.github-markdown-preview",
+        "bradlc.vscode-tailwindcss",
+        "deerawan.vscode-faker",
+        "eamodio.gitlens",
+        "EditorConfig.EditorConfig",
+        "esbenp.prettier-vscode",
+        "github.copilot-chat",
+        "github.copilot",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "MS-vsliveshare.vsliveshare",
+        "timonwong.shellcheck",
+        "tory.unique-id-generator",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "ms-python.isort",
+        "ms-azuretools.vscode-docker",
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 8000],
+  "onCreateCommand": "bash -lc 'chmod +x .devcontainer/*.sh || true; bash .devcontainer/onCreateCommand.sh'",
+  "postCreateCommand": "bash -lc 'chmod +x .devcontainer/*.sh || true; bash .devcontainer/postCreateCommand.sh'"
+}

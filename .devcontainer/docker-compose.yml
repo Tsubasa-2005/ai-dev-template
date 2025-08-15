@@ -1,0 +1,17 @@
+name: monorepo-devcontainer
+
+volumes:
+  asdf:
+  node_modules:
+  yarn_cache:
+
+services:
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ~/.config/gcloud:/home/vscode/.config/gcloud
+      - asdf:/home/vscode/.asdf
+    command: sleep infinity
