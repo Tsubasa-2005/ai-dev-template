@@ -5,16 +5,7 @@
       "label": "Dev: FastAPI",
       "type": "shell",
       "command": "python3",
-      "args": [
-        "-m",
-        "uvicorn",
-        "app.main:app",
-        "--reload",
-        "--host",
-        "0.0.0.0",
-        "--port",
-        "8000"
-      ],
+      "args": ["-m", "uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"],
       "options": {
         "cwd": "${workspaceFolder}/backend"
       },
@@ -23,8 +14,11 @@
     {
       "label": "Dev: Next.js",
       "type": "shell",
-      "command": "npm",
-      "args": ["run", "dev"],
+      "command": "bash",
+      "args": [
+        "-lc",
+        "source $HOME/.asdf/asdf.sh 2>/dev/null || true; export PATH=$HOME/.asdf/shims:$HOME/.asdf/bin:$PATH; corepack enable >/dev/null 2>&1 || true; yarn run dev"
+      ],
       "options": {
         "cwd": "${workspaceFolder}/frontend"
       },
