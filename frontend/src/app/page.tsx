@@ -1,9 +1,29 @@
+"use client";
 import Image from "next/image";
+import { useState } from "react";
+import { api } from "@/lib/apiClient";
 
 export default function Home() {
+  const [status, setStatus] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+
+  const handlePing = async () => {
+    setLoading(true);
+    setStatus("");
+    try {
+      const data = await api.ping();
+      setStatus(JSON.stringify(data));
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setStatus(`Error: ${msg}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
+      <main className="flex flex-col gap-[16px] row-start-2 items-center sm:items-start w-full max-w-xl">
         <Image
           className="dark:invert"
           src="/next.svg"
@@ -12,20 +32,25 @@ export default function Home() {
           height={38}
           priority
         />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+        <div className="flex gap-3 items-center">
+          <button
+            onClick={handlePing}
+            disabled={loading}
+            className="rounded-md bg-blue-600 text-white px-4 py-2 text-sm disabled:opacity-50"
+          >
+            {loading ? "Pinging..." : "Ping FastAPI"}
+          </button>
+          <span className="text-sm text-gray-500">
+            Calls GET {process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000"}/ping
+          </span>
+        </div>
+        {status && (
+          <pre className="mt-2 w-full overflow-auto rounded bg-black/5 dark:bg-white/10 p-3 text-xs">
+            {status}
+          </pre>
+        )}
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+  <div className="flex gap-4 items-center flex-col sm:flex-row mt-6">
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
             href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
