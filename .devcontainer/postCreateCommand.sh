@@ -13,13 +13,23 @@ append_shrc() {
   echo "$1" | tee --append ~/.bashrc ~/.zshrc > /dev/null
 }
 
-if [ ! -d .venv ]; then
-  python3 -m venv .venv
+# Minimal Python setup: use repo root resolved by git and install backend requirements
+reporoot="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+venv_dir="${reporoot}/.venv"
+py="${venv_dir}/bin/python"
+
+if [ ! -d "${venv_dir}" ]; then
+  echo "Creating venv at ${venv_dir}"
+  python3 -m venv "${venv_dir}"
 fi
-. .venv/bin/activate
-python3 -m pip install --upgrade pip
-if [ -f requirements.txt ]; then
-  pip install -r requirements.txt
+
+"${py}" -m pip install --upgrade pip setuptools wheel
+
+if [ -f "${reporoot}/backend/requirements.txt" ]; then
+  "${py}" -m pip install -r "${reporoot}/backend/requirements.txt"
+fi
+if [ -f "${reporoot}/backend/requirements-dev.txt" ]; then
+  "${py}" -m pip install -r "${reporoot}/backend/requirements-dev.txt"
 fi
 
 # Ensure Git LFS is installed and hooks are set up
