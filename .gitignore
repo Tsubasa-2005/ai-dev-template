@@ -46,3 +46,33 @@ ehthumbs_vista.db
 
 # Devcontainer accidental home mount
 .devcontainer/~/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.python-version
+
+# Packaging / build artifacts
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+pip-wheel-metadata/
+
+# Test / coverage / caches
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.cache/
+.mypy_cache/
+.pyre/
+.pytype/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
