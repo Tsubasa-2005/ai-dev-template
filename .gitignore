@@ -43,3 +43,6 @@ ehthumbs_vista.db
 
 # Venv
 .venv
+
+# Devcontainer accidental home mount
+.devcontainer/~/
