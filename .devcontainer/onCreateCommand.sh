@@ -1,8 +1,6 @@
 #!/bin/bash
 set -euo pipefail -o posix
 
-reporoot=$(git rev-parse --show-toplevel)
-
 asdfdir=/home/vscode/.asdf
 
 if [ -n "${GOOGLE_CREDENTIALS_FOR_GITHUB_CODESPACES:-}" ]; then
@@ -60,19 +58,13 @@ setup_nodejs() {
 
 setup_python() {
   echo "Setup python"
-  backend_dir="$reporoot/backend"
-  if [ -d "$backend_dir" ]; then
-    cd "$backend_dir"
-    if [ ! -d .venv ]; then
-      python3 -m venv .venv
-    fi
-    . .venv/bin/activate
-    python3 -m pip install --upgrade pip
-    if [ -f requirements.txt ]; then
-      pip install -r requirements.txt
-    fi
-  else
-    echo "backend directory not found. Skip python setup."
+  if [ ! -d .venv ]; then
+    python3 -m venv .venv
+  fi
+  . .venv/bin/activate
+  python3 -m pip install --upgrade pip
+  if [ -f requirements.txt ]; then
+    pip install -r requirements.txt
   fi
 }
 
