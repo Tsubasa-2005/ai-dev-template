@@ -22,6 +22,31 @@ if [ -f requirements.txt ]; then
   pip install -r requirements.txt
 fi
 
+# Ensure Git LFS is installed and hooks are set up
+if command -v git-lfs >/dev/null 2>&1; then
+  echo "git-lfs found: $(git lfs version || true)"
+  # Install/refresh hooks globally and for this repo (safe if already set)
+  git lfs install --skip-repo || true
+  git lfs install --force || true
+else
+  echo "git-lfs not found in PATH. Attempting install..."
+  if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update -y && sudo apt-get install -y git-lfs || true
+  elif command -v apk >/dev/null 2>&1; then
+    sudo apk add --no-cache git-lfs || true
+  elif command -v dnf >/dev/null 2>&1; then
+    sudo dnf install -y git-lfs || true
+  elif command -v yum >/dev/null 2>&1; then
+    sudo yum install -y git-lfs || true
+  fi
+  if command -v git-lfs >/dev/null 2>&1; then
+    git lfs install --skip-repo || true
+    git lfs install --force || true
+  else
+    echo "Failed to install git-lfs; pushes to LFS-enabled repos may fail until it's installed."
+  fi
+fi
+
 if command -v make >/dev/null 2>&1 && [ -f Makefile ] && grep -Eq '^[[:space:]]*setup[[:space:]]*:' Makefile; then
   echo make setup
   make setup || true

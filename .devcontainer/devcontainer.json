@@ -14,6 +14,10 @@
     "ghcr.io/devcontainers/features/github-cli": {
       "version": "latest"
     },
+    "ghcr.io/devcontainers/features/git:1": {
+      "version": "latest",
+      "installLFS": true
+    },
     "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
       // Fixed dockerDashComposeVersion is temporary solution for the issue.
       // https://github.com/devcontainers/features/issues/1297
