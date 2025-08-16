@@ -69,11 +69,15 @@ setup_python() {
 }
 
 prebuild_compound_core() {
-   echo "Make root"
+   echo "Make backend (prebuild)"
   if command -v make >/dev/null 2>&1 && [ -f backend/Makefile ]; then
-    make all -C backend
+    if grep -Eq '^[[:space:]]*all[[:space:]]*:' backend/Makefile; then
+      make -C backend all
+    else
+      echo "Target 'all' not found in backend/Makefile. Skipping."
+    fi
   else
-    echo "'make' command not found or Makefile missing in backend. Skipping."
+    echo "'make' command not found or backend/Makefile missing. Skipping."
   fi
 }
 

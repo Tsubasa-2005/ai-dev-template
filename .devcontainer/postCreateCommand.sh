@@ -22,12 +22,20 @@ if [ -f requirements.txt ]; then
   pip install -r requirements.txt
 fi
 
-echo make setup
-make setup || true
+if command -v make >/dev/null 2>&1 && [ -f Makefile ] && grep -Eq '^[[:space:]]*setup[[:space:]]*:' Makefile; then
+  echo make setup
+  make setup || true
+else
+  echo "Makefile or 'setup' target not found. Skipping make setup."
+fi
 
 prebuild_compound_core() {
   echo "Make root"
-  make all
+  if command -v make >/dev/null 2>&1 && [ -f Makefile ] && grep -Eq '^[[:space:]]*all[[:space:]]*:' Makefile; then
+    make all
+  else
+    echo "Makefile or 'all' target not found at repo root. Skipping."
+  fi
 }
 
 if [ -n "${GOOGLE_CREDENTIALS_FOR_GITHUB_CODESPACES:-}" ]; then
