@@ -3,10 +3,13 @@ from __future__ import annotations
 import os
 
 from pydantic import BaseModel
+
 try:
-    from dotenv import load_dotenv  # type: ignore
     import os as _os
     from pathlib import Path as _Path
+
+    from dotenv import load_dotenv  # type: ignore
+
     # Resolve backend/ directory containing .env files: backend/app/core/config.py -> backend/
     _env_dir = _Path(__file__).resolve().parents[2]
     load_dotenv(dotenv_path=str(_env_dir / ".env"), override=False)

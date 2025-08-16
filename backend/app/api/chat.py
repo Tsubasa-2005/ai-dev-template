@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
 import httpx
+from fastapi import APIRouter, HTTPException
 
 from ..models.chat import ChatRequest, ChatResponse
 from ..services.ai_client import chat as ai_chat
